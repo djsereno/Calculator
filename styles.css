@@ -1,6 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --color-background: #427aa1;
+  --color-calculator: #05668d;
+  --color-display: #d2d2d2;
+  --color-buttons: #ebf2fa;
+  --color-operator: #fe7f2d;
+  --color-clear: #fcca46;
+  --color-equals: #a1c181;
+}
+
 * {
   margin: 0;
   padding: 0;
+  font-size: 1.4rem;
+  font-family: "Comfortaa", Courier, monospace;
 }
 
 body {
@@ -8,32 +22,61 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-color: var(--color-background);
 }
 
 .calculator-container {
+  padding: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
   width: 500px;
   height: 600px;
+  background-color: var(--color-calculator);
+  border-radius: 10px;
 }
 
 .display {
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: end;
   grid-row: 1;
   grid-column: 1 / 6;
+  background-color: var(--color-display);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-buttons);
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+button:hover {
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px inset,
+    rgba(17, 17, 26, 0.1) 0px 0px 24px inset;
+}
+
+.operator {
+  background-color: var(--color-operator);
 }
 
 .clear {
   grid-row: 2 / span 2;
   grid-column: 5;
+  background-color: var(--color-clear);
 }
 
 .equals {
   grid-row: 4 / span 2;
   grid-column: 5;
+  background-color: var(--color-equals);
 }
 
 .zero {
