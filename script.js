@@ -25,7 +25,7 @@ for (let i = 0; i < numberButtons.length; i++) {
     // If the last operator pressed was "equals" and then a new
     // number is input, then the user is starting a new equation
     // and the old info should be cleared
-    if (lastOperator === "equals") allClear();
+    if (lastOperator === "equals" || typeof total === "string") allClear();
 
     if (inputNextOperand) {
       inputNextOperand = false;
@@ -42,14 +42,15 @@ clearButton.addEventListener("click", allClear);
 operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
-  console.log(operatorButton);
 
   operatorButton.addEventListener("click", (e) => {
+    if (typeof total === "string") allClear();
     // Every operator works as an equals button except that if the
     // last operator was "equals" then there's no need to update "total"
     if (lastOperator !== "equals") {
       total = operate(lastOperator, total, display.value);
     }
+    console.log(total, typeof total);
     lastOperator = e.target.id;
     display.update(total);
     inputNextOperand = true;
@@ -74,8 +75,8 @@ function multiply(x, y) {
   return x * y;
 }
 
-function divide(x, y) {
-  return x / y;
+function divide(numerator, divisor) {
+  return +divisor === 0 ? "how dare you..." : numerator / divisor;
 }
 
 function operate(operator, x, y) {
