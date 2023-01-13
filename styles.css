@@ -36,9 +36,10 @@ body {
   height: 600px;
   background-color: var(--color-calculator);
   border-radius: 10px;
+  user-select: none;
 }
 
-.display {
+.display-container {
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -46,8 +47,13 @@ body {
   grid-row: 1;
   grid-column: 1 / 6;
   background-color: var(--color-display);
+}
+
+.display {
   font-size: 2rem;
   font-weight: 700;
+  user-select: auto;
+
 }
 
 button {

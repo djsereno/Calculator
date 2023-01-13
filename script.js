@@ -1,3 +1,26 @@
+let display = {
+  value: 0,
+  docElement: document.querySelector(".display"),
+  update: function (value) {
+    if (value !== undefined) this.value = value;
+    this.docElement.innerText = this.value;
+  },
+  append: function (value) {
+    let newValue = this.value.toString() + value;
+    this.update(+newValue);
+  },
+};
+display.update();
+
+numberButtons = document.querySelectorAll(".number");
+for (let i = 0; i < numberButtons.length; i++) {
+  let number = numberButtons[i];
+  number.addEventListener("click", (e) => display.append(e.target.innerText));
+}
+
+clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", (e) => display.update(0));
+
 function add(x, y) {
   return x + y;
 }
