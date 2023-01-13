@@ -3,6 +3,7 @@ let lastOperator = "add";
 let inputNextOperand = false;
 let display = {
   value: 0,
+  deletable: true,
   docElement: document.querySelector(".display"),
   update: function (value) {
     if (value !== undefined) this.value = value;
@@ -12,13 +13,20 @@ let display = {
     let newValue = this.value.toString() + value;
     this.update(+newValue);
   },
+  delete: function () {
+    if (this.deletable) {
+      let newValue = this.value.toString();
+      newValue = newValue.substring(0, newValue.length - 1);
+      this.update(+newValue);
+    }
+  },
   clear: function () {
     this.update(0);
   },
 };
 display.update();
 
-numberButtons = document.querySelectorAll(".number");
+const numberButtons = document.querySelectorAll(".number");
 for (let i = 0; i < numberButtons.length; i++) {
   let number = numberButtons[i];
   number.addEventListener("click", (e) => {
@@ -26,20 +34,23 @@ for (let i = 0; i < numberButtons.length; i++) {
     // number is input, then the user is starting a new equation
     // and the old info should be cleared
     if (lastOperator === "equals" || typeof total === "string") allClear();
-
     if (inputNextOperand) {
       inputNextOperand = false;
       display.update(e.target.innerText);
     } else {
       display.append(e.target.innerText);
     }
+    display.deletable = true;
   });
 }
 
-clearButton = document.querySelector(".clear");
+const deleteButton = document.querySelector(".delete");
+deleteButton.addEventListener("click", () => display.delete());
+
+const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", allClear);
 
-operatorButtons = document.querySelectorAll(".operator");
+const operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
 
@@ -53,6 +64,7 @@ for (i = 0; i < operatorButtons.length; i++) {
     console.log(total, typeof total);
     lastOperator = e.target.id;
     display.update(total);
+    display.deletable = false;
     inputNextOperand = true;
   });
 }
