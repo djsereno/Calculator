@@ -23,6 +23,11 @@ let display = {
   clear: function () {
     this.update(0);
   },
+  changeSign: function () {
+    this.value = -1 * this.value;
+    this.update();
+    if (inputNextOperand) total *= -1;
+  },
 };
 display.update();
 
@@ -49,6 +54,9 @@ deleteButton.addEventListener("click", () => display.delete());
 
 const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", allClear);
+
+const changeSignButton = document.querySelector(".sign");
+changeSignButton.addEventListener("click", () => display.changeSign());
 
 const operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
