@@ -1,6 +1,7 @@
 let total = 0;
 let lastOperator = "add";
 let inputNextOperand = false;
+const MAX_CHARS = 14;
 
 let display = {
   value: "0",
@@ -137,8 +138,21 @@ function inputOperator(operator) {
   if (lastOperator !== "equals") {
     total = operate(lastOperator, total, +display.value);
   }
+
+  let processedString = total.toString();
+  if (typeof total === "number" && processedString.length > MAX_CHARS) {
+    let ints = Math.floor(total);
+    if (ints.toString().length >= MAX_CHARS) {
+      // 8 characters max needed to represent big number in scientific notation
+      // before calculating as infinity: -X.___e+XXX
+      processedString = ints.toExponential(MAX_CHARS - 8);
+    } else {
+      processedString = total.toFixed(MAX_CHARS - ints.toString().length - 1);
+    }
+  }
+
   lastOperator = operator;
-  display.update(total.toString());
+  display.update(processedString);
   display.deletable = false;
   inputNextOperand = true;
 }
@@ -186,5 +200,6 @@ function operate(operator, x, y) {
     default:
       result = "Invalid operator";
   }
-  return typeof result === "string" ? result : +result.toFixed(10);
+  // return typeof result === "string" ? result : +result.toFixed(10);
+  return result;
 }
