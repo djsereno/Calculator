@@ -1,8 +1,10 @@
 :root {
   --color-background: #709cbb;
   --color-calculator: #05668d;
+  --color-font: #323232;
   --color-display: #d2d2d2;
   --color-buttons: #ebf2fa;
+  --color-border: #054b67;
   --color-operator: #f4a261;
   --color-delete: #e9c46a;
   --color-clear: #e76f51;
@@ -14,6 +16,7 @@
   padding: 0;
   font-size: 1.4rem;
   font-family: "Roboto Mono", monospace;
+  color: var(--color-font);
 }
 
 body {
@@ -25,29 +28,30 @@ body {
 }
 
 .calculator-container {
-  padding: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  column-gap: 10px;
-  row-gap: 10px;
+  column-gap: 15px;
+  row-gap: 15px;
+  padding: 20px;
   width: 500px;
   height: 600px;
   background-color: var(--color-calculator);
-  border-radius: 10px;
+  border: 3px solid var(--color-border);
+  border-radius: 20px;
   user-select: none;
 }
 
 .display-container {
-  margin-bottom: 20px;
-  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: end;
   grid-row: 1;
   grid-column: 1 / 6;
-  border-radius: 10px;
+  padding: 1rem;
   background-color: var(--color-display);
+  border: 3px solid var(--color-border);
+  border-radius: 10px;
 }
 
 .display {
@@ -58,9 +62,9 @@ body {
 }
 
 button {
-  border: none;
-  border-radius: 10px;
   background-color: var(--color-buttons);
+  border: 3px solid var(--color-border);
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 

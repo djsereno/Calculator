@@ -52,16 +52,17 @@ let display = {
 display.update();
 
 // KEYBOARD SUPPORT
+
 document.addEventListener("keydown", (e) => {
   if (/[0-9.]/.test(e.key)) {
-    numberInput(e.key);
-    if (e.key === ".") decimalInput();
+    inputNumber(e.key);
+    if (e.key === ".") inputDecimal();
   } else if (e.key === "Shift") {
     display.changeSign();
   } else if (e.key === "Backspace") {
     display.delete();
   } else if (e.key === "Delete") {
-    allClear();
+    clearAll();
   } else if (e.key === "Enter" || /[\+\-\*\/]/.test(e.key)) {
     let operation;
     switch (e.key) {
@@ -81,39 +82,43 @@ document.addEventListener("keydown", (e) => {
         operation = "equals";
         break;
     }
-    operatorInput(operation);
+    inputOperator(operation);
   }
 });
+
+// MOUSE SUPPORT
 
 const numberButtons = document.querySelectorAll(".number");
 for (let i = 0; i < numberButtons.length; i++) {
   let number = numberButtons[i];
-  number.addEventListener("click", (e) => numberInput(e.target.innerText));
+  number.addEventListener("click", (e) => inputNumber(e.target.innerText));
 }
 
 const operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
-  operatorButton.addEventListener("click", (e) => operatorInput(e.target.id));
+  operatorButton.addEventListener("click", (e) => inputOperator(e.target.id));
 }
 
 const decimalButton = document.querySelector("#decimal");
-decimalButton.addEventListener("click", decimalInput);
+decimalButton.addEventListener("click", inputDecimal);
 
 const deleteButton = document.querySelector(".delete");
 deleteButton.addEventListener("click", () => display.delete());
 
 const clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", allClear);
+clearButton.addEventListener("click", clearAll);
 
 const changeSignButton = document.querySelector(".sign");
 changeSignButton.addEventListener("click", () => display.changeSign());
 
-function numberInput(number) {
+// FUNCTIONS
+
+function inputNumber(number) {
   // If the last operator pressed was "equals" and then a new
   // number is input, then the user is starting a new equation
   // and the old info should be cleared
-  if (lastOperator === "equals" || typeof total === "string") allClear();
+  if (lastOperator === "equals" || typeof total === "string") clearAll();
   if (inputNextOperand) {
     inputNextOperand = false;
     display.clear();
@@ -124,14 +129,14 @@ function numberInput(number) {
   }
 }
 
-function operatorInput(operator) {
+function inputOperator(operator) {
   let lastOperatorButton = document.querySelector(".active");
   if (lastOperatorButton) lastOperatorButton.classList.remove("active");
 
   let operatorButton = document.querySelector("#" + operator);
   operatorButton.classList.add("active");
 
-  if (typeof total === "string") allClear();
+  if (typeof total === "string") clearAll();
   // Every operator works as an equals button except that if the
   // last operator was "equals" then there's no need to update "total"
   if (lastOperator !== "equals") {
@@ -143,13 +148,13 @@ function operatorInput(operator) {
   inputNextOperand = true;
 }
 
-function decimalInput() {
+function inputDecimal() {
   if (display.valueString.includes(".")) return;
   display.valueString += ".";
   display.draw();
 }
 
-function allClear() {
+function clearAll() {
   display.clear();
   total = 0;
   lastOperator = "add";
