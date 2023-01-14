@@ -66,22 +66,6 @@ for (let i = 0; i < numberButtons.length; i++) {
   });
 }
 
-const decimalButton = document.querySelector("#decimal");
-decimalButton.addEventListener("click", () => {
-  if (display.valueString.includes(".")) return;
-  display.valueString += ".";
-  display.draw();
-});
-
-const deleteButton = document.querySelector(".delete");
-deleteButton.addEventListener("click", () => display.delete());
-
-const clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", allClear);
-
-const changeSignButton = document.querySelector(".sign");
-changeSignButton.addEventListener("click", () => display.changeSign());
-
 const operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
@@ -99,6 +83,22 @@ for (i = 0; i < operatorButtons.length; i++) {
     inputNextOperand = true;
   });
 }
+
+const decimalButton = document.querySelector("#decimal");
+decimalButton.addEventListener("click", () => {
+  if (display.valueString.includes(".")) return;
+  display.valueString += ".";
+  display.draw();
+});
+
+const deleteButton = document.querySelector(".delete");
+deleteButton.addEventListener("click", () => display.delete());
+
+const clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click", allClear);
+
+const changeSignButton = document.querySelector(".sign");
+changeSignButton.addEventListener("click", () => display.changeSign());
 
 function allClear() {
   display.clear();

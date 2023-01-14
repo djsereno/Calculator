@@ -76,6 +76,7 @@ button:hover {
 .delete {
   background-color: var(--color-delete);
 }
+
 .clear {
   background-color: var(--color-clear);
 }
