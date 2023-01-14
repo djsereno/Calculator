@@ -73,6 +73,11 @@ button:hover {
   background-color: var(--color-operator);
 }
 
+.operator.active {
+  border: 3px solid white;
+  color: white;
+}
+
 .delete {
   background-color: var(--color-delete);
 }

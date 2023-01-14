@@ -71,6 +71,10 @@ for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
 
   operatorButton.addEventListener("click", (e) => {
+    let lastOperatorButton = document.querySelector(".active");
+    if (lastOperatorButton) lastOperatorButton.classList.remove("active");
+    operatorButton.classList.add("active");
+
     if (typeof total === "string") allClear();
     // Every operator works as an equals button except that if the
     // last operator was "equals" then there's no need to update "total"
@@ -104,6 +108,8 @@ function allClear() {
   display.clear();
   total = 0;
   lastOperator = "add";
+  let lastOperatorButton = document.querySelector(".active");
+  if (lastOperatorButton) lastOperatorButton.classList.remove("active");
 }
 
 function add(x, y) {
