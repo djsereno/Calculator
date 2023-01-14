@@ -69,10 +69,6 @@
 }
 
 button {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
   background-color: var(--color-buttons);
   border: 3px solid var(--color-border);
   border-radius: 10px;
@@ -96,6 +92,7 @@ button p.shortcut {
   position: relative;
   bottom: 15px;
   font-size: 9px;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .operator {

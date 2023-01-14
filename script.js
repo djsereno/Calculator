@@ -87,7 +87,13 @@ for (let i = 0; i < numberButtons.length; i++) {
 const operatorButtons = document.querySelectorAll(".operator");
 for (i = 0; i < operatorButtons.length; i++) {
   let operatorButton = operatorButtons[i];
-  operatorButton.addEventListener("click", (e) => inputOperator(e.target.id));
+  operatorButton.addEventListener(
+    "click",
+    (e) => {
+      inputOperator(e.currentTarget.id);
+    },
+    false
+  );
 }
 
 const changeSignButton = document.querySelector(".sign");
@@ -126,9 +132,8 @@ function inputOperator(operator) {
   // 'total' should only be a string after a divide by zero result
   if (typeof total === "string") clearAll();
 
-  // Every operator works as an equals button except that if the
-  // last operator was "equals" then there's no need to update "total"
-  // since there is no associated operation
+  // If the last operator was "equals" then there's no need to
+  // update "total" since there is no associated operation
   if (lastOperator !== "equals") {
     total = operate(lastOperator, total, +display.value);
   }
