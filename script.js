@@ -19,8 +19,12 @@ let display = {
     this.draw();
   },
 
-  draw: function () {
-    this.docElement.innerText = this.valueString;
+  draw: function (message) {
+    if (message) {
+      this.docElement.innerText = message;
+    } else {
+      this.docElement.innerText = this.valueString;
+    }
   },
 
   append: function (newDigit) {
@@ -82,7 +86,7 @@ for (i = 0; i < operatorButtons.length; i++) {
       total = operate(lastOperator, total, display.value);
     }
     lastOperator = e.target.id;
-    display.update(total);
+    typeof total === "string" ? display.draw(total) : display.update(total);
     display.deletable = false;
     inputNextOperand = true;
   });
@@ -125,7 +129,7 @@ function multiply(x, y) {
 }
 
 function divide(numerator, divisor) {
-  return +divisor === 0 ? "how dare you..." : numerator / divisor;
+  return numerator / divisor;
 }
 
 function operate(operator, x, y) {
@@ -142,9 +146,10 @@ function operate(operator, x, y) {
       break;
     case "divide":
       result = divide(x, y);
+      if (isNaN(result)) result = "how dare you";
       break;
     default:
-      return "Invalid operator";
+      result = "Invalid operator";
   }
-  return +result.toFixed(10);
+  return typeof result === "string" ? result : +result.toFixed(10);
 }
