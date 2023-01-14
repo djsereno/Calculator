@@ -101,6 +101,10 @@ button p.shortcut {
 
 .operator.active {
   border: 3px solid white;
+}
+
+.operator.active,
+.operator.active p {
   color: white;
 }
 
@@ -143,13 +147,13 @@ footer .right-container {
   grid-column: 3;
   display: flex;
   justify-content: end;
-  align-items:flex-end;
+  align-items: flex-end;
   padding: 5px;
 }
 
 footer .right-container a {
   font-size: small;
-  color: rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 footer a,

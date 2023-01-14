@@ -1,13 +1,29 @@
 let total = 0;
 let lastOperator = "add";
 let inputNextOperand = false;
+
 const MAX_CHARS = 14;
+const numberButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
+const changeSignButton = document.querySelector(".sign");
+const deleteButton = document.querySelector(".delete");
+const clearButton = document.querySelector(".clear");
+
+document.addEventListener("keydown", (e) => handleKeyboardInput(e.key));
+changeSignButton.addEventListener("click", () => display.changeSign());
+deleteButton.addEventListener("click", () => display.delete());
+clearButton.addEventListener("click", clearAll);
+numberButtons.forEach((button) =>
+  button.addEventListener("click", (e) => inputNumber(e.target.innerText))
+);
+operatorButtons.forEach((button) =>
+  button.addEventListener("click", (e) => inputOperator(e.currentTarget.id))
+);
 
 let display = {
   value: "0",
   deletable: true,
   docElement: document.querySelector(".display"),
-
   update: function (value) {
     if (value !== undefined) {
       // This regular expression will select all leading 0's except
@@ -17,11 +33,9 @@ let display = {
     }
     this.docElement.innerText = this.value;
   },
-
   append: function (newDigit) {
     this.update(this.value + newDigit);
   },
-
   delete: function () {
     if (this.deletable) {
       let newValue = this.value.slice(0, -1);
@@ -30,11 +44,6 @@ let display = {
         : this.update(this.value.slice(0, -1));
     }
   },
-
-  clear: function () {
-    this.update("0");
-  },
-
   changeSign: function () {
     this.value = -1 * this.value;
     this.update();
@@ -43,70 +52,22 @@ let display = {
 };
 display.update();
 
-// KEYBOARD SUPPORT
-
-document.addEventListener("keydown", (e) => {
-  if (/[0-9.]/.test(e.key)) {
-    inputNumber(e.key);
-  } else if (e.key === "Shift") {
-    display.changeSign();
-  } else if (e.key === "Backspace") {
-    clearAll();
-  } else if (e.key === "Delete") {
-    display.delete();
-  } else if (e.key === "Enter" || /[\+\-\*\/]/.test(e.key)) {
-    let operation;
-    switch (e.key) {
-      case "+":
-        operation = "add";
-        break;
-      case "-":
-        operation = "subtract";
-        break;
-      case "*":
-        operation = "multiply";
-        break;
-      case "/":
-        operation = "divide";
-        break;
-      case "Enter":
-        operation = "equals";
-        break;
-    }
-    inputOperator(operation);
-  }
-});
-
-// MOUSE SUPPORT
-
-const numberButtons = document.querySelectorAll(".number");
-for (let i = 0; i < numberButtons.length; i++) {
-  let number = numberButtons[i];
-  number.addEventListener("click", (e) => inputNumber(e.target.innerText));
+function handleKeyboardInput(key) {
+  if (/[0-9.]/.test(key)) inputNumber(key);
+  if (key === "Shift") display.changeSign();
+  if (key === "Backspace") clearAll();
+  if (key === "Delete") display.delete();
+  if (key === "Enter" || /[\+\-\*\/\=]/.test(key))
+    inputOperator(getOperation(key));
 }
 
-const operatorButtons = document.querySelectorAll(".operator");
-for (i = 0; i < operatorButtons.length; i++) {
-  let operatorButton = operatorButtons[i];
-  operatorButton.addEventListener(
-    "click",
-    (e) => {
-      inputOperator(e.currentTarget.id);
-    },
-    false
-  );
+function getOperation(key) {
+  if (key === "+") return "add";
+  if (key === "-") return "subtract";
+  if (key === "*") return "multiply";
+  if (key === "/") return "divide";
+  if (key === "Enter" || key === "=") return "equals";
 }
-
-const changeSignButton = document.querySelector(".sign");
-changeSignButton.addEventListener("click", () => display.changeSign());
-
-const deleteButton = document.querySelector(".delete");
-deleteButton.addEventListener("click", () => display.delete());
-
-const clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", clearAll);
-
-// FUNCTIONS
 
 function inputNumber(number) {
   // If the last operator pressed was "equals" and then a new
@@ -116,7 +77,7 @@ function inputNumber(number) {
 
   if (inputNextOperand) {
     inputNextOperand = false;
-    display.clear();
+    display.update("0");
   }
 
   if (number === "." && display.value.includes(".")) return;
@@ -158,48 +119,19 @@ function inputOperator(operator) {
 }
 
 function clearAll() {
-  display.clear();
+  display.update("0");
   total = 0;
   lastOperator = "add";
   let lastOperatorButton = document.querySelector(".active");
   if (lastOperatorButton) lastOperatorButton.classList.remove("active");
 }
 
-function add(x, y) {
-  return x + y;
-}
-
-function subtract(x, y) {
-  return x - y;
-}
-
-function multiply(x, y) {
-  return x * y;
-}
-
-function divide(numerator, divisor) {
-  return numerator / divisor;
-}
-
 function operate(operator, x, y) {
   let result;
-  switch (operator) {
-    case "add":
-      result = add(x, y);
-      break;
-    case "subtract":
-      result = subtract(x, y);
-      break;
-    case "multiply":
-      result = multiply(x, y);
-      break;
-    case "divide":
-      result = divide(x, y);
-      if (isNaN(result) || !isFinite(result)) result = "how dare you";
-      break;
-    default:
-      result = "Invalid operator";
-  }
-  // return typeof result === "string" ? result : +result.toFixed(10);
+  if (operator === "add") result = x + y;
+  if (operator === "subtract") result = x - y;
+  if (operator === "multiply") result = x * y;
+  if (operator === "divide") result = x / y;
+  if (isNaN(result) || !isFinite(result)) result = "how dare you";
   return result;
 }
