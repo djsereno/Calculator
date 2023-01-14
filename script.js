@@ -187,7 +187,7 @@ function operate(operator, x, y) {
       break;
     case "divide":
       result = divide(x, y);
-      if (isNaN(result)) result = "how dare you";
+      if (isNaN(result) || !isFinite(result)) result = "how dare you";
       break;
     default:
       result = "Invalid operator";
