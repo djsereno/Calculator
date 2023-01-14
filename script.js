@@ -3,26 +3,42 @@ let lastOperator = "add";
 let inputNextOperand = false;
 let display = {
   value: 0,
+  valueString: "0",
   deletable: true,
   docElement: document.querySelector(".display"),
+
   update: function (value) {
-    if (value !== undefined) this.value = value;
-    this.docElement.innerText = this.value;
+    if (value !== undefined) {
+      this.value = +value;
+      this.valueString = this.value.toString().substring(0, 13);
+      if (typeof value === "string" && value.slice(-1) === ".")
+        this.valueString += ".";
+    } else {
+      this.valueString = this.value.toString().substring(0, 13);
+    }
+    this.draw();
   },
-  append: function (value) {
-    let newValue = this.value.toString() + value;
-    this.update(+newValue);
+
+  draw: function () {
+    this.docElement.innerText = this.valueString;
   },
+
+  append: function (newDigit) {
+    if (newDigit === "." && this.value % 1 !== 0) return;
+    this.update(this.valueString + newDigit);
+  },
+
   delete: function () {
     if (this.deletable) {
-      let newValue = this.value.toString();
-      newValue = newValue.substring(0, newValue.length - 1);
-      this.update(+newValue);
+      let newValue = this.valueString.substring(0, this.valueString.length - 1);
+      this.update(newValue);
     }
   },
+
   clear: function () {
     this.update(0);
   },
+
   changeSign: function () {
     this.value = -1 * this.value;
     this.update();
@@ -41,13 +57,21 @@ for (let i = 0; i < numberButtons.length; i++) {
     if (lastOperator === "equals" || typeof total === "string") allClear();
     if (inputNextOperand) {
       inputNextOperand = false;
-      display.update(e.target.innerText);
-    } else {
-      display.append(e.target.innerText);
+      display.clear();
     }
-    display.deletable = true;
+    if (e.target.id !== "decimal") {
+      display.append(e.target.innerText);
+      display.deletable = true;
+    }
   });
 }
+
+const decimalButton = document.querySelector("#decimal");
+decimalButton.addEventListener("click", () => {
+  if (display.valueString.includes(".")) return;
+  display.valueString += ".";
+  display.draw();
+});
 
 const deleteButton = document.querySelector(".delete");
 deleteButton.addEventListener("click", () => display.delete());
@@ -69,7 +93,6 @@ for (i = 0; i < operatorButtons.length; i++) {
     if (lastOperator !== "equals") {
       total = operate(lastOperator, total, display.value);
     }
-    console.log(total, typeof total);
     lastOperator = e.target.id;
     display.update(total);
     display.deletable = false;
@@ -100,20 +123,22 @@ function divide(numerator, divisor) {
 }
 
 function operate(operator, x, y) {
+  let result;
   switch (operator) {
     case "add":
-      return add(x, y);
+      result = add(x, y);
       break;
     case "subtract":
-      return subtract(x, y);
+      result = subtract(x, y);
       break;
     case "multiply":
-      return multiply(x, y);
+      result = multiply(x, y);
       break;
     case "divide":
-      return divide(x, y);
+      result = divide(x, y);
       break;
     default:
       return "Invalid operator";
   }
+  return +result.toFixed(10);
 }
