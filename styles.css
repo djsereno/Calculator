@@ -144,7 +144,6 @@ footer a:active {
 footer i {
   font-size: 1.6em;
   color: var(--color-buttons);
-  transform: scale(1.1);
 }
 
 footer a.icon:hover {
