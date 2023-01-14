@@ -36,7 +36,7 @@
   row-gap: 15px;
   padding: 20px;
   width: 500px;
-  height: 600px;
+  height: 500px;
   background-color: var(--color-calculator);
   border: 3px solid var(--color-border);
   border-radius: 20px;
@@ -59,7 +59,9 @@
   font-size: 3em;
   font-weight: 500;
   user-select: auto;
-  overflow: hidden;
+  text-align: right;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 button {
@@ -68,7 +70,6 @@ button {
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   font-size: 2em;
-
 }
 
 button:hover {

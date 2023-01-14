@@ -1,46 +1,37 @@
 let total = 0;
 let lastOperator = "add";
 let inputNextOperand = false;
+
 let display = {
-  value: 0,
-  valueString: "0",
+  value: "0",
   deletable: true,
   docElement: document.querySelector(".display"),
 
   update: function (value) {
     if (value !== undefined) {
-      this.value = +value;
-      this.valueString = this.value.toString().substring(0, 13);
-      if (typeof value === "string" && value.slice(-1) === ".")
-        this.valueString += ".";
-    } else {
-      this.valueString = this.value.toString().substring(0, 13);
+      // This regular expression will select all leading 0's except
+      // for one right before a decimal
+      let regEx = /^0+(?!\.)\B/;
+      this.value = value.replace(regEx, "");
     }
-    this.draw();
-  },
-
-  draw: function (message) {
-    if (message) {
-      this.docElement.innerText = message;
-    } else {
-      this.docElement.innerText = this.valueString;
-    }
+    this.docElement.innerText = this.value;
   },
 
   append: function (newDigit) {
-    if (newDigit === "." && this.value % 1 !== 0) return;
-    this.update(this.valueString + newDigit);
+    this.update(this.value + newDigit);
   },
 
   delete: function () {
     if (this.deletable) {
-      let newValue = this.valueString.substring(0, this.valueString.length - 1);
-      this.update(newValue);
+      let newValue = this.value.slice(0, -1);
+      newValue.length === 0
+        ? this.update("0")
+        : this.update(this.value.slice(0, -1));
     }
   },
 
   clear: function () {
-    this.update(0);
+    this.update("0");
   },
 
   changeSign: function () {
@@ -56,7 +47,6 @@ display.update();
 document.addEventListener("keydown", (e) => {
   if (/[0-9.]/.test(e.key)) {
     inputNumber(e.key);
-    if (e.key === ".") inputDecimal();
   } else if (e.key === "Shift") {
     display.changeSign();
   } else if (e.key === "Backspace") {
@@ -100,17 +90,14 @@ for (i = 0; i < operatorButtons.length; i++) {
   operatorButton.addEventListener("click", (e) => inputOperator(e.target.id));
 }
 
-const decimalButton = document.querySelector("#decimal");
-decimalButton.addEventListener("click", inputDecimal);
+const changeSignButton = document.querySelector(".sign");
+changeSignButton.addEventListener("click", () => display.changeSign());
 
 const deleteButton = document.querySelector(".delete");
 deleteButton.addEventListener("click", () => display.delete());
 
 const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", clearAll);
-
-const changeSignButton = document.querySelector(".sign");
-changeSignButton.addEventListener("click", () => display.changeSign());
 
 // FUNCTIONS
 
@@ -119,39 +106,36 @@ function inputNumber(number) {
   // number is input, then the user is starting a new equation
   // and the old info should be cleared
   if (lastOperator === "equals" || typeof total === "string") clearAll();
+
   if (inputNextOperand) {
     inputNextOperand = false;
     display.clear();
   }
-  if (number !== ".") {
-    display.append(number);
-    display.deletable = true;
-  }
+
+  if (number === "." && display.value.includes(".")) return;
+  display.append(number);
+  display.deletable = true;
 }
 
 function inputOperator(operator) {
   let lastOperatorButton = document.querySelector(".active");
   if (lastOperatorButton) lastOperatorButton.classList.remove("active");
-
   let operatorButton = document.querySelector("#" + operator);
   operatorButton.classList.add("active");
 
+  // 'total' should only be a string after a divide by zero result
   if (typeof total === "string") clearAll();
+
   // Every operator works as an equals button except that if the
   // last operator was "equals" then there's no need to update "total"
+  // since there is no associated operation
   if (lastOperator !== "equals") {
-    total = operate(lastOperator, total, display.value);
+    total = operate(lastOperator, total, +display.value);
   }
   lastOperator = operator;
-  typeof total === "string" ? display.draw(total) : display.update(total);
+  display.update(total.toString());
   display.deletable = false;
   inputNextOperand = true;
-}
-
-function inputDecimal() {
-  if (display.valueString.includes(".")) return;
-  display.valueString += ".";
-  display.draw();
 }
 
 function clearAll() {
@@ -163,7 +147,7 @@ function clearAll() {
 }
 
 function add(x, y) {
-  return +x + +y;
+  return x + y;
 }
 
 function subtract(x, y) {
