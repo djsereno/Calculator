@@ -50,9 +50,9 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === "Shift") {
     display.changeSign();
   } else if (e.key === "Backspace") {
-    display.delete();
-  } else if (e.key === "Delete") {
     clearAll();
+  } else if (e.key === "Delete") {
+    display.delete();
   } else if (e.key === "Enter" || /[\+\-\*\/]/.test(e.key)) {
     let operation;
     switch (e.key) {
