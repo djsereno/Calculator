@@ -69,6 +69,10 @@
 }
 
 button {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
   background-color: var(--color-buttons);
   border: 3px solid var(--color-border);
   border-radius: 10px;
@@ -79,6 +83,19 @@ button {
 button:hover {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px inset,
     rgba(17, 17, 26, 0.1) 0px 0px 24px inset;
+}
+
+button p.label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+button p.shortcut {
+  position: relative;
+  bottom: 15px;
+  font-size: 9px;
 }
 
 .operator {
