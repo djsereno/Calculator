@@ -14,15 +14,16 @@
 * {
   margin: 0;
   padding: 0;
-  font-size: 1.4rem;
+  box-sizing: border-box;
   font-family: "Roboto Mono", monospace;
   color: var(--color-font);
 }
 
-body {
+.page-content {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 50px;
   height: 100vh;
   background-color: var(--color-background);
 }
@@ -55,7 +56,7 @@ body {
 }
 
 .display {
-  font-size: 2.5rem;
+  font-size: 3.5em;
   font-weight: 500;
   user-select: auto;
   overflow: hidden;
@@ -66,6 +67,8 @@ button {
   border: 3px solid var(--color-border);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  font-size: 2em;
+
 }
 
 button:hover {
@@ -94,4 +97,44 @@ button:hover {
   grid-row: 4 / span 2;
   grid-column: 5;
   background-color: var(--color-equals);
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  background-color: var(--color-calculator);
+  border-top: 3px solid var(--color-border);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+footer a,
+footer a:hover,
+footer a:visited,
+footer a:active {
+  color: var(--color-buttons);
+  text-decoration: none;
+}
+
+footer i {
+  font-size: 1.6em;
+  color: var(--color-buttons);
+}
+
+footer a.circled i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 0.8em;
+  background-color: var(--color-buttons);
+  color: var(--color-calculator);
+  font-size: 1em;
 }
