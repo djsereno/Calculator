@@ -25,12 +25,9 @@ let display = {
   deletable: true,
   docElement: document.querySelector(".display"),
   update: function (value) {
-    if (value !== undefined) {
-      // This regular expression will select all leading 0's except
-      // for one right before a decimal
-      let regEx = /^0+(?!\.)\B/;
-      this.value = value.replace(regEx, "");
-    }
+    // Select all leading 0's except for one right before a decimal
+    let regEx = /^0+(?!\.)\B/;
+    this.value = value.replace(regEx, "");
     this.docElement.innerText = this.value;
   },
   append: function (newDigit) {
@@ -45,12 +42,11 @@ let display = {
     }
   },
   changeSign: function () {
-    this.value = -1 * this.value;
-    this.update();
+    this.update(-1 * this.value);
     if (inputNextOperand) total *= -1;
   },
 };
-display.update();
+display.update("0");
 
 function handleKeyboardInput(key) {
   if (/[0-9.]/.test(key)) inputNumber(key);
@@ -70,9 +66,7 @@ function getOperation(key) {
 }
 
 function inputNumber(number) {
-  // If the last operator pressed was "equals" and then a new
-  // number is input, then the user is starting a new equation
-  // and the old info should be cleared
+  // User is starting a new equation and the old info should be cleared
   if (lastOperator === "equals" || typeof total === "string") clearAll();
 
   if (inputNextOperand) {
@@ -94,8 +88,7 @@ function inputOperator(operator) {
   // 'total' should only be a string after a divide by zero result
   if (typeof total === "string") clearAll();
 
-  // If the last operator was "equals" then there's no need to
-  // update "total" since there is no associated operation
+  // No need to update "total" since there is no associated operation
   if (lastOperator !== "equals") {
     total = operate(lastOperator, total, +display.value);
   }
@@ -104,8 +97,7 @@ function inputOperator(operator) {
   if (typeof total === "number" && processedString.length > MAX_CHARS) {
     let ints = Math.floor(total);
     if (ints.toString().length >= MAX_CHARS) {
-      // 8 characters max needed to represent big number in scientific notation
-      // before calculating as infinity: -X.___e+XXX
+      // 8 characters max needed to represent big number in scientific notation: -X.___e+XXX
       processedString = ints.toExponential(MAX_CHARS - 8);
     } else {
       processedString = total.toFixed(MAX_CHARS - ints.toString().length - 1);
