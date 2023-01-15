@@ -36,9 +36,7 @@ let display = {
   delete: function () {
     if (this.deletable) {
       let newValue = this.value.slice(0, -1);
-      newValue.length === 0
-        ? this.update("0")
-        : this.update(this.value.slice(0, -1));
+      newValue.length === 0 ? this.update("0") : this.update(this.value.slice(0, -1));
     }
   },
   changeSign: function () {
@@ -53,8 +51,7 @@ function handleKeyboardInput(key) {
   if (key === "Shift") display.changeSign();
   if (key === "Backspace") clearAll();
   if (key === "Delete") display.delete();
-  if (key === "Enter" || /[\+\-\*\/\=]/.test(key))
-    inputOperator(getOperation(key));
+  if (key === "Enter" || /[\+\-\*\/\=]/.test(key)) inputOperator(getOperation(key));
 }
 
 function getOperation(key) {
