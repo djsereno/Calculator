@@ -2,7 +2,7 @@ let total = 0;
 let lastOperator = "add";
 let inputNextOperand = false;
 
-const MAX_CHARS = 14;
+const MAX_CHARS = 13;
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const changeSignButton = document.querySelector(".sign");
@@ -40,7 +40,7 @@ let display = {
     }
   },
   changeSign: function () {
-    this.update(-1 * this.value);
+    this.update((-1 * this.value).toString());
     if (inputNextOperand) total *= -1;
   },
 };
