@@ -5,16 +5,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/djsereno/Calculator/">
-    <img src="./images/screenshot.png" alt="Logo" width="200" height="200">
+  <a href="https://djsereno.github.io/Calculator/">
+    <img src="./images/screenshot.png" alt="Logo" height="200">
   </a>
 
 <h3 align="center">Calculator</h3>
 
   <p align="center">
     A web-based on-screen calculator.
-    <br />
-    <a href="https://github.com/djsereno/Calculator/"><strong>Explore the docs »</strong></a>
     <br />
     <a href="https://djsereno.github.io/Calculator/">Preview</a>
     ·
@@ -24,7 +22,7 @@
   </p>
 </div>
 
-### Built With
+## Built With
 
 - Javascript
 - HTML/CSS
