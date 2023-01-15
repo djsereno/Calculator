@@ -9,7 +9,7 @@ const changeSignButton = document.querySelector(".sign");
 const deleteButton = document.querySelector(".delete");
 const clearButton = document.querySelector(".clear");
 
-document.addEventListener("keydown", (e) => handleKeyboardInput(e.key));
+document.addEventListener("keydown", handleKeyboardInput);
 changeSignButton.addEventListener("click", () => display.changeSign());
 deleteButton.addEventListener("click", () => display.delete());
 clearButton.addEventListener("click", clearAll);
@@ -46,7 +46,9 @@ let display = {
 };
 display.update("0");
 
-function handleKeyboardInput(key) {
+function handleKeyboardInput(e) {
+  let key = e.key;
+  e.preventDefault();
   if (/[0-9.]/.test(key)) inputNumber(key);
   if (key === "Shift") display.changeSign();
   if (key === "Backspace") clearAll();
